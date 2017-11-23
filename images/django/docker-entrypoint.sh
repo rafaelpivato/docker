@@ -3,7 +3,6 @@
 export PYTHONUNBUFFERED=1
 
 function serve() {
-    python -u manage.py collectstatic --noinput
     gunicorn ${DJANGO_WSGI_APP} \
         --name seniorgrowth \
         --bind 0.0.0.0:8000 \
