@@ -6,12 +6,10 @@ WORKDIR /srv/app/
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         postgresql-client \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
     && pip install --no-cache-dir gunicorn
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
-COPY . ./
+VOLUME ["/srv/media"]
 
 EXPOSE 8000
 
