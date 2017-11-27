@@ -12,6 +12,13 @@ function serve() {
         --access-logformat='%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s" "%({X-Forwarded-For}i)s" "%({X-Forwarded-Proto}i)s" "%({Access-Control-Allow-Origin}i)s"'
 }
 
+function channels() {
+    daphne ${DJANGO_ASGI_APP} \
+           --bind 0.0.0 \
+           --port 8000 \
+           --proxy-headers
+}
+
 function work() {
     celery worker -A ${DJANGO_CELERY_APP}
 }
@@ -26,6 +33,9 @@ case $command in
     serve|server)
 	serve
 	;;
+    channels)
+        channels
+        ;;
     work|worker)
 	work
 	;;
