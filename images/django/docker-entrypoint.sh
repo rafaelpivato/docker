@@ -19,6 +19,10 @@ function channels() {
            --proxy-headers
 }
 
+function runworker() {
+    python manage.py runworker
+}
+
 function work() {
     celery worker -A ${DJANGO_CELERY_APP}
 }
@@ -35,6 +39,9 @@ case $command in
 	;;
     channels)
         channels
+        ;;
+    runworker)
+        runworker
         ;;
     work|worker)
 	work
