@@ -14,7 +14,7 @@ function serve() {
 
 function channels() {
     daphne ${DJANGO_ASGI_APP} \
-           --bind 0.0.0 \
+           --bind 0.0.0.0 \
            --port 8000 \
            --proxy-headers
 }
