@@ -1,0 +1,82 @@
+version: '3.2'
+
+services:
+
+    redis:
+      image: redis:4
+      restart: always
+
+    postgres:
+      image: postgres:10
+      restart: always
+      environment:
+        - POSTGRES_DB=sentry
+        - POSTGRES_USER=sentry
+        - POSTGRES_PASSWORD=${PASSWORD:-sentry}
+
+    app:
+      image: sentry:8
+      restart: always
+      volumes:
+        - type: volume
+          source: filestore
+          target: /var/lib/sentry/files
+          volume:
+            nocopy: true
+      depends_on:
+        - redis
+        - postgres
+      environment:
+        - SENTRY_REDIS_HOST=redis
+        - SENTRY_POSTGRES_HOST=postgres
+        - SENTRY_DB_NAME=sentry
+        - SENTRY_DB_USER=sentry
+        - SENTRY_DB_PASSWORD=${PASSWORD:-sentry}
+        - SENTRY_SECRET_KEY=${SECRET}
+      ports:
+        - 9000:9000
+
+    cron:
+      image: sentry:8
+      restart: always
+      command: "run cron"
+      volumes:
+        - type: volume
+          source: filestore
+          target: /var/lib/sentry/files
+          volume:
+            nocopy: true
+      depends_on:
+        - redis
+        - postgres
+      environment:
+        - SENTRY_REDIS_HOST=redis
+        - SENTRY_POSTGRES_HOST=postgres
+        - SENTRY_DB_NAME=sentry
+        - SENTRY_DB_USER=sentry
+        - SENTRY_DB_PASSWORD=${PASSWORD:-sentry}
+        - SENTRY_SECRET_KEY=${SECRET}
+
+    worker:
+      image: sentry:8
+      restart: always
+      command: "run worker"
+      volumes:
+        - type: volume
+          source: filestore
+          target: /var/lib/sentry/files
+          volume:
+            nocopy: true
+      depends_on:
+        - redis
+        - postgres
+      environment:
+        - SENTRY_REDIS_HOST=redis
+        - SENTRY_POSTGRES_HOST=postgres
+        - SENTRY_DB_NAME=sentry
+        - SENTRY_DB_USER=sentry
+        - SENTRY_DB_PASSWORD=${PASSWORD:-sentry}
+        - SENTRY_SECRET_KEY=${SECRET}
+
+volumes:
+  filestore:
