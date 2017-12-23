@@ -31,12 +31,16 @@ function migrate() {
     python -u manage.py migrate --noinput
 }
 
+function collectstatic() {
+    python -u manage.py collectstatic --noinput
+}
+
 command=$1
 
 case $command in
     serve|server)
-	serve
-	;;
+	    serve
+        ;;
     channels)
         channels
         ;;
@@ -44,12 +48,15 @@ case $command in
         runworker
         ;;
     work|worker)
-	work
-	;;
+	    work
+	    ;;
     migrate|migration)
-	migrate
-	;;
+	    migrate
+	    ;;
+    collect|collectstatic)
+        collectstatic
+        ;;
     *)
-	serve
-	;;
+	    serve
+	    ;;
 esac
