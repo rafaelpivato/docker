@@ -9,8 +9,6 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && pip install --no-cache-dir gunicorn
 
-VOLUME ["/srv/media"]
-
 EXPOSE 8000
 
 COPY docker-entrypoint.sh /srv
