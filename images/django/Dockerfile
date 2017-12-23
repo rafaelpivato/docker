@@ -13,7 +13,7 @@ VOLUME ["/srv/media"]
 
 EXPOSE 8000
 
-COPY docker-entrypoint.sh /srv/app
+COPY docker-entrypoint.sh /srv
 RUN chmod a+x /srv/docker-entrypoint.sh
 ENTRYPOINT ["/srv/docker-entrypoint.sh"]
 CMD ["serve"]
